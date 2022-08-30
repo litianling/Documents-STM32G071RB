@@ -1,0 +1,104 @@
+C51 COMPILER V8.05a   CHENGXU                                                              12/11/2009 16:48:04 PAGE 1   
+
+
+C51 COMPILER V8.05a, COMPILATION OF MODULE CHENGXU
+OBJECT MODULE PLACED IN chengxu.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE chengxu.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <reg52.h>
+   2          #define uchar unsigned char
+   3          #define uint  unsigned  int     
+   4          uchar duan[10]={0xc0,0Xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90};      //所需的段的位码
+   5          //uchar wei[4]={0XEf,0XDf,0XBf,0X7f};                                 //位的控制端      (开发板)
+   6          uchar wei[4]={0X80,0X40,0X20,0X10};                                 //位的控制端        (仿真)
+   7          uint z,x,c,v, date;     //定义数据类型
+   8          uint dispcount=0;
+   9          /******************************************************************
+  10          
+  11          延时函数
+  12          
+  13          ******************************************************************/
+  14          void delay(uchar t)
+  15          {
+  16   1        uchar i,j;
+  17   1         for(i=0;i<t;i++)
+  18   1         {
+  19   2               for(j=13;j>0;j--);
+  20   2               { ;
+  21   3               }
+  22   2         }
+  23   1      }
+  24          
+  25          /**********************************************************************
+  26                          数码管动态扫描
+  27          *********************************************************************/
+  28          void xianshi()
+  29           { 
+  30   1       /*****************数据转换*****************************/ 
+  31   1        z=date/1000;                   //求千位
+  32   1        x=date%1000/100;               //求百位
+  33   1        c=date%100/10;                 //求十位
+  34   1        v=date%10;                     //求个位
+  35   1      
+  36   1            P2=wei[0];
+  37   1                P0=duan[z];
+  38   1                delay(50);  
+  39   1                P2=wei[1];
+  40   1            P0=duan[x];
+  41   1                delay(50);  
+  42   1                P2=wei[2];
+  43   1            P0=duan[c];
+  44   1                delay(50);  
+  45   1            P2=wei[3];
+  46   1            P0=duan[v];
+  47   1                delay(50);  
+  48   1                                             
+  49   1      
+  50   1             }
+  51          
+  52           /*************************************************************************
+  53                                          主函数  
+  54          **************************************************************************/
+  55          void ExtInt0() interrupt 0 //中断服务程序
+C51 COMPILER V8.05a   CHENGXU                                                              12/11/2009 16:48:04 PAGE 2   
+
+  56          {
+  57   1      dispcount++; //每按一次中断按键，计数加一
+  58   1      if (dispcount==9999) //计数范围0-9999
+  59   1      {dispcount=0;}
+  60   1      }
+  61          
+  62           /*************************************************************************
+  63                                          主函数  
+  64          **************************************************************************/
+  65           void main()
+  66          {  
+  67   1      
+  68   1      TCON=0x01; //中断设置
+  69   1      IE=0x81;
+  70   1      
+  71   1       while(1)
+  72   1              {         
+  73   2          date=dispcount;
+  74   2              xianshi();
+  75   2          }
+  76   1      }                               
+  77          
+  78          
+  79                                                                                    
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    207    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     26    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

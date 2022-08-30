@@ -1,0 +1,48 @@
+C51 COMPILER V7.02b   步进_缁_                                                             09/26/2009 10:26:34 PAGE 1   
+
+
+C51 COMPILER V7.02b, COMPILATION OF MODULE 步进_缁_
+OBJECT MODULE PLACED IN 步进电机.OBJ
+COMPILER INVOKED BY: D:\Progrom\Keil\C51\BIN\C51.EXE 步进电机.c BROWSE DEBUG OBJECTEXTEND
+
+stmt level    source
+
+   1          #include <reg52.h>
+   2          
+   3          
+   4          unsigned char code F_Rotation[4]={0x02,0x04,0x08,0x10};//正转表格
+   5          unsigned char code B_Rotation[4]={0x10,0x08,0x040,0x02};//反转表格
+   6          
+   7          void Delay(unsigned int i)//延时
+   8          {
+   9   1       while(--i);
+  10   1      }
+  11          
+  12          main()
+  13          {
+  14   1       
+  15   1       unsigned char i;
+  16   1      
+  17   1       while(1)
+  18   1       {
+  19   2        for(i=0;i<4;i++)      //4相
+  20   2           {
+  21   3           P1=F_Rotation[i];  //输出对应的相 可以自行换成反转表格
+  22   3           Delay(500);        //改变这个参数可以调整电机转速
+  23   3               }
+  24   2        }
+  25   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     32    ----
+   CONSTANT SIZE    =      8    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
